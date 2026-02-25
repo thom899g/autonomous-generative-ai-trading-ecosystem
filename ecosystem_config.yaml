@@ -1,0 +1,44 @@
+# Autonomous Trading Ecosystem Configuration
+version: "2.1.0"
+system:
+  mode: "simulation"  # simulation | paper_trading | live
+  simulation_start: "2024-01-01"
+  simulation_end: "2024-06-01"
+  
+exchanges:
+  primary:
+    name: "binance"
+    api_key_env: "BINANCE_API_KEY"
+    api_secret_env: "BINANCE_API_SECRET"
+  backup:
+    name: "coinbase"
+    api_key_env: "COINBASE_API_KEY"
+    api_secret_env: "COINBASE_API_SECRET"
+
+firebase:
+  project_id: "${FIREBASE_PROJECT_ID}"
+  credentials_path: "./firebase_credentials.json"
+  collections:
+    strategies: "trading_strategies"
+    evaluations: "strategy_evaluations"
+    market_data: "market_streams"
+    executions: "trade_executions"
+
+model_providers:
+  openai:
+    api_key_env: "OPENAI_API_KEY"
+    model: "gpt-4-turbo"
+  local_llm:
+    enabled: false
+    endpoint: "http://localhost:8000/v1"
+
+risk_parameters:
+  max_position_size: 0.1  # 10% of portfolio
+  max_daily_loss: 0.05    # 5% max daily drawdown
+  max_leverage: 3.0
+  stop_loss_default: 0.02  # 2% stop loss
+
+logging:
+  level: "INFO"
+  file: "./logs/trading_ecosystem.log"
+  firestore_logs: true
